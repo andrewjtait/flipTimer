@@ -1,0 +1,79 @@
+$height: 140px;
+
+@-webkit-keyframes flipTop {
+  0% { -webkit-transform: perspective($height*2) rotateX(0deg); }
+  100% { -webkit-transform: perspective($height*2) rotateX(-90deg); }
+}
+
+@-webkit-keyframes flipBottom {
+  0% { -webkit-transform: perspective($height*2) rotateX(90deg); }
+  100% { -webkit-transform: perspective($height*2) rotateX(0deg); }
+}
+
+.flipTimer {
+  color: #FFF;
+  font-size: $height;
+  line-height: $height;
+  height: $height;
+
+  .seconds {
+    height: 100%;
+    position: relative;
+  }
+
+  .digit {
+    position: absolute;
+    height: 100%;
+
+    > div {
+      position: absolute;
+      left: 0;
+      overflow: hidden;
+      height: 50%;
+
+      .digit-wrap {
+        background-color: #222;
+      }
+
+      &.digit-top {
+        background-color: #000;
+        top: 0;
+        z-index: 0;
+      }
+
+      &.digit-bottom {
+        bottom: 0;
+        z-index:0;
+
+        .digit-wrap {
+          display: block;
+          margin-top: -100%;
+        }
+      }
+    }
+
+    &.previous {
+      .digit-top {
+        z-index: 2;
+        -webkit-transform-origin: 50% 100%;
+        -webkit-animation: flipTop .5s linear both;
+      }
+
+      .digit-bottom {
+        z-index: 1;
+      }
+    }
+
+    &.active {
+      .digit-top {
+        z-index: 1;
+      }
+
+      .digit-bottom {
+        z-index: 2;
+        -webkit-transform-origin: 50% 0%;
+        -webkit-animation: flipBottom .5s .5s linear both;
+      }
+    }
+  }
+}

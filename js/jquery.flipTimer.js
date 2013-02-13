@@ -1,6 +1,57 @@
 (function($) {
 
-  var flipTimer = function($element) {
+  /**
+   * @class flipTimer
+   * @constructor
+   *
+   * @param element {HTMLElement} the element flipTimer is called on
+   */
+  var flipTimer = function(element) {
+    this.element = element;
+
+    // ensures the HTMLElement has a class of 'flipTimer'
+    if (!this.element.hasClass('flipTimer')) {
+      this.element.addClass('flipTimer');
+    }
+
+    // attach default options to instance
+    this.options = flipTimer.defaults;
+
+    // detects if the seconds digits should be used
+    if (this.element.find('.seconds').length > 0) {
+      this.options.seconds = true;
+    }
+
+    // detects if the minutes digits should be used
+    if (this.element.find('.minutes').length > 0) {
+      this.options.minutes = true;
+    }
+
+    // detects if the hours digits should be used
+    if (this.element.find('.hours').length > 0) {
+      this.options.hours = true;
+    }
+
+    // detects if the days digits should be used
+    if (this.element.find('.days').length > 0) {
+      this.options.days = true;
+    }
+  };
+
+  flipTimer.defaults = {
+    seconds: false,
+    minutes: false,
+    hours: false,
+    days: false,
+    digitTemplate: '' +
+      '<div class="digit previous">' +
+      '  <div class="digit-top">' +
+      '    <span class="digit-wrap"></span>' +
+      '  </div>' +
+      '  <div class="digit-bottom">' +
+      '    <span class="digit-wrap"></span>' +
+      '  </div>' +
+      '</div>'
   };
 
   $.fn.flipTimer = function() {

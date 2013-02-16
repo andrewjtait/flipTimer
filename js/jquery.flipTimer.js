@@ -42,6 +42,9 @@
     if (this.element.find('.days').length > 0) {
       this.options.days = this.element.find('.days')[0];
     }
+
+    // render the html for the plugin
+    this.render();
   };
 
   flipTimer.defaults = {
@@ -52,7 +55,7 @@
     date: '2013,01,01,01,01,01',
     direction: 'up',
     digitTemplate: '' +
-      '<div class="digit previous">' +
+      '<div class="digit">' +
       '  <div class="digit-top">' +
       '    <span class="digit-wrap"></span>' +
       '  </div>' +
@@ -60,6 +63,55 @@
       '    <span class="digit-wrap"></span>' +
       '  </div>' +
       '</div>'
+  };
+
+  flipTimer.prototype = {
+    /**
+     * Dictates what needs rendering for the plugin
+     *
+     * @method render
+     */
+    render: function() {
+      // if using seconds, populate it
+      if (this.options.seconds) {
+        this.renderDigits(this.options.seconds);
+      }
+      // if using minutes, populate it
+      if (this.options.minutes) {
+        this.renderDigits(this.options.minutes);
+      }
+      // if using hours, populate it
+      if (this.options.hours) {
+        this.renderDigits(this.options.hours);
+      }
+      // if using days, populate it
+      if (this.options.minutes) {
+        this.renderDigits(this.options.days);
+      }
+    },
+
+    /**
+     * Renders the digits for a given subject
+     *
+     * @method renderDigits
+     * @param subject {HTMLElement} the element to generate digits for
+     */
+    renderDigits: function(subject) {
+      var i, x, currentDigit, _this = this;
+
+      if ($(subject).find('.digit').length == 0) {
+        for(i=0; i<10; i++) {
+          $(subject).append(_this.options.digitTemplate);
+          currentDigit = $(subject).find('.digit')[i];
+          if (_this.options.direction == 'up') {
+            x = 9 - i;
+          } else {
+            x = i;
+          }
+          $(currentDigit).find('.digit-wrap').append(x);
+        }
+      }
+    }
   };
 
   $.fn.flipTimer = function(options) {

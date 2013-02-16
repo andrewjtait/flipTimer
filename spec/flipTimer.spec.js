@@ -1,5 +1,5 @@
 describe("flipTimer", function() {
-  var instance, options;
+  var instance, options, altOptions;
 
   beforeEach(function() {
     // set some options for the test
@@ -13,6 +13,13 @@ describe("flipTimer", function() {
     // set up an example without any options or divs
     $('.empty-example').flipTimer();
     emptyInstance = $('.empty-example').data('flipTimer');
+    // set up an example with alternative options
+    altOptions = {
+      date: '2012,12,25,18,30,10',
+      direction: 'up'
+    };
+    $('.alt-example').flipTimer();
+    altInstance = $('.alt-example').data('flipTimer');
   });
 
   describe("initialise", function() {
@@ -60,7 +67,7 @@ describe("flipTimer", function() {
 
     it("should define a template for digits", function() {
       var template = '' +
-        '<div class="digit previous">' +
+        '<div class="digit">' +
         '  <div class="digit-top">' +
         '    <span class="digit-wrap"></span>' +
         '  </div>' +
@@ -104,6 +111,45 @@ describe("flipTimer", function() {
 
       it("should set days to false if div does not exist", function() {
         expect(emptyInstance.options.days).toEqual(false);
+      });
+    });
+  });
+
+  describe("render", function() {
+    beforeEach(function() {
+      spyOn(instance, 'renderDigits').andCallThrough();
+      instance.render();
+    });
+
+    it("should call renderDigits on seconds", function() {
+      expect(instance.renderDigits).toHaveBeenCalledWith(instance.options.seconds);
+    });
+
+    it("should call renderDigits on minutes", function() {
+      expect(instance.renderDigits).toHaveBeenCalledWith(instance.options.minutes);
+    });
+
+    it("should call renderDigits on hours", function() {
+      expect(instance.renderDigits).toHaveBeenCalledWith(instance.options.hours);
+    });
+
+    it("should call renderDigits on days", function() {
+      expect(instance.renderDigits).toHaveBeenCalledWith(instance.options.days);
+    });
+
+    describe("renderDigits", function() {
+      it("should render 10 digitTemplates inside the subject", function() {
+        expect(instance.element.find('.seconds .digit').length).toEqual(10);
+      });
+
+      it("should output digits 0 through 9 for each digitTemplate if the direction is up", function() {
+        expect(instance.element.find('.seconds .digit:first-child .digit-wrap').html()).toEqual('0');
+        expect(instance.element.find('.seconds .digit:last-child .digit-wrap').html()).toEqual('9');
+      });
+
+      it("should output digits 9 through 0 for each digitTemplate if the direction is down", function() {
+        expect(altInstance.element.find('.seconds .digit:first-child .digit-wrap').html()).toEqual('9');
+        expect(altInstance.element.find('.seconds .digit:last-child .digit-wrap').html()).toEqual('0');
       });
     });
   });

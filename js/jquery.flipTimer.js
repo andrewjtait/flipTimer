@@ -15,26 +15,26 @@
     }
 
     // attach default options to instance
-    this.options = flipTimer.defaults;
+    this.options = $.extend({}, this.options, flipTimer.defaults);
 
     // detects if the seconds digits should be used
     if (this.element.find('.seconds').length > 0) {
-      this.options.seconds = true;
+      this.options.seconds = this.element.find('.seconds')[0];
     }
 
     // detects if the minutes digits should be used
     if (this.element.find('.minutes').length > 0) {
-      this.options.minutes = true;
+      this.options.minutes = this.element.find('.minutes')[0];
     }
 
     // detects if the hours digits should be used
     if (this.element.find('.hours').length > 0) {
-      this.options.hours = true;
+      this.options.hours = this.element.find('.hours')[0];
     }
 
     // detects if the days digits should be used
     if (this.element.find('.days').length > 0) {
-      this.options.days = true;
+      this.options.days = this.element.find('.days')[0];
     }
   };
 

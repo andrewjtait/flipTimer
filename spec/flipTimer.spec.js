@@ -3,22 +3,24 @@ describe("flipTimer", function() {
 
   beforeEach(function() {
     // set some options for the test
-    options = {
-      date: '2013,12,25,18,30,10',
-      direction: 'down'
-    };
     // set up an example with correct options
-    $('.example').flipTimer(options);
-    instance = $('.example').data('flipTimer');
-    // set up an example without any options or divs
-    $('.empty-example').flipTimer();
-    emptyInstance = $('.empty-example').data('flipTimer');
-    // set up an example with alternative options
-    altOptions = {
+    options = {
       date: '2012,12,25,18,30,10',
       direction: 'up'
     };
-    $('.alt-example').flipTimer();
+    $('.example').flipTimer(options);
+    instance = $('.example').data('flipTimer');
+
+    // set up an example without any options or divs
+    $('.empty-example').flipTimer();
+    emptyInstance = $('.empty-example').data('flipTimer');
+
+    // set up an example with alternative options
+    altOptions = {
+      date: '2013,12,25,18,30,10',
+      direction: 'down'
+    };
+    $('.alt-example').flipTimer(altOptions);
     altInstance = $('.alt-example').data('flipTimer');
   });
 
@@ -117,7 +119,8 @@ describe("flipTimer", function() {
 
   describe("render", function() {
     beforeEach(function() {
-      spyOn(instance, 'renderDigits').andCallThrough();
+      spyOn(instance, 'renderDigits');
+      spyOn(instance, 'startTimer');
       instance.render();
     });
 
@@ -151,6 +154,33 @@ describe("flipTimer", function() {
         expect(altInstance.element.find('.seconds .digit:first-child .digit-wrap').html()).toEqual('9');
         expect(altInstance.element.find('.seconds .digit:last-child .digit-wrap').html()).toEqual('0');
       });
+    });
+
+    it("should start the timer", function() {
+      expect(instance.startTimer).toHaveBeenCalled();
+    });
+  });
+
+  describe("startTimer", function() {
+    beforeEach(function() {
+      spyOn(instance, 'increaseDigit');
+      jasmine.Clock.useMock();
+      instance.startTimer();
+    });
+
+    it("should not have called increaseDigit yet", function() {
+      jasmine.Clock.tick(999);
+      expect(instance.increaseDigit).not.toHaveBeenCalled();
+    });
+
+    it("should call increaseDigit every second", function() {
+      jasmine.Clock.tick(1000);
+      expect(instance.increaseDigit.calls.length).toEqual(1);
+      jasmine.Clock.tick(1000);
+      expect(instance.increaseDigit.calls.length).toEqual(2);
+      jasmine.Clock.tick(1000);
+      expect(instance.increaseDigit.calls.length).toEqual(3);
+      // ... you get the idea
     });
   });
 });

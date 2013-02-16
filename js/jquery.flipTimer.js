@@ -88,6 +88,8 @@
       if (this.options.minutes) {
         this.renderDigits(this.options.days);
       }
+
+      this.startTimer();
     },
 
     /**
@@ -103,14 +105,55 @@
         for(i=0; i<10; i++) {
           $(subject).append(_this.options.digitTemplate);
           currentDigit = $(subject).find('.digit')[i];
-          if (_this.options.direction == 'up') {
+          if (_this.options.direction == 'down') {
             x = 9 - i;
           } else {
             x = i;
           }
           $(currentDigit).find('.digit-wrap').append(x);
         }
+
+        // untested
+        $(this.element.find('.seconds .digit')[0]).addClass('previous');
+        $(this.element.find('.seconds .digit')[1]).addClass('active');
+        // end of untested
       }
+    },
+
+    /**
+     * Start a timer with an interval of 1 second
+     *
+     * @method startTimer
+     */
+    startTimer: function() {
+      var _this = this;
+
+      clearInterval(this.timer);
+      this.timer = setInterval(function() {
+        _this.increaseDigit(_this.options.seconds);
+      },1000);
+    },
+
+    /**
+     * Changes classes on the digits to increase the number
+     *
+     * @method increaseDigit
+     * @param target {HTMLElement} the element to increase digit for
+     */
+    increaseDigit: function(target) {
+      /*
+      var current = $(target).find('.active'),
+          previous = $(target).find('.previous');
+
+      previous.removeClass('previous');
+      current.removeClass('active').addClass('previous');
+
+      if (current.next().length == 0) {
+        $(target).find('.digit:first-child').addClass('active');
+      } else {
+        current.next().addClass('active');
+      }
+      */
     }
   };
 
@@ -121,34 +164,4 @@
       }
     });
   };
-
-    /*
-    var _this = this;
-
-    // starts an interval of 1 second
-    this.startTimer = function() {
-      setInterval(function() {
-        //_this.increaseDigit($('.seconds'));
-      },1000);
-    };
-
-    // increases a digit
-    /*
-    this.increaseDigit = function($target) {
-      var current = $target.find('.active'),
-          previous = $target.find('.previous');
-
-      previous.removeClass('previous');
-      current.removeClass('active').addClass('previous');
-
-      if (current.next().length == 0) {
-        $target.find('.digit:first-child').addClass('active');
-      } else {
-        current.next().addClass('active');
-      }
-    };
-
-
-    this.startTimer();
-    */
 })(jQuery);

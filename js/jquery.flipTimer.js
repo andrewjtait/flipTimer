@@ -6,7 +6,7 @@
    *
    * @param element {HTMLElement} the element flipTimer is called on
    */
-  var flipTimer = function(element) {
+  var flipTimer = function(element, options) {
     this.element = element;
 
     // ensures the HTMLElement has a class of 'flipTimer'
@@ -14,8 +14,14 @@
       this.element.addClass('flipTimer');
     }
 
+    // attach users options to instance
+    this.userOptions = options;
+
     // attach default options to instance
-    this.options = $.extend({}, this.options, flipTimer.defaults);
+    this.defaultOptions = flipTimer.defaults;
+
+    // merge default options with user options and attach to instance
+    this.options = $.extend({}, this.defaultOptions, this.userOptions);
 
     // detects if the seconds digits should be used
     if (this.element.find('.seconds').length > 0) {
@@ -43,6 +49,8 @@
     minutes: false,
     hours: false,
     days: false,
+    date: '2013,01,01,01,01,01',
+    direction: 'up',
     digitTemplate: '' +
       '<div class="digit previous">' +
       '  <div class="digit-top">' +
@@ -54,10 +62,10 @@
       '</div>'
   };
 
-  $.fn.flipTimer = function() {
+  $.fn.flipTimer = function(options) {
     return this.each(function() {
       if (!$(this).data('flipTimer')) {
-        $(this).data('flipTimer', new flipTimer($(this)));
+        $(this).data('flipTimer', new flipTimer($(this), options));
       }
     });
   };

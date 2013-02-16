@@ -21,6 +21,10 @@ $height: 140px;
     position: relative;
   }
 
+  .digit-set:last-child {
+    margin-left: 72px;
+  }
+
   .digit {
     position: absolute;
     height: 100%;

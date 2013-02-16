@@ -5,7 +5,7 @@ describe("flipTimer", function() {
     // set some options for the test
     // set up an example with correct options
     options = {
-      date: '2012,12,25,18,30,10',
+      date: 'February 15, 2013 08:30:30',
       direction: 'up'
     };
     $('.example').flipTimer(options);
@@ -17,7 +17,7 @@ describe("flipTimer", function() {
 
     // set up an example with alternative options
     altOptions = {
-      date: '2013,12,25,18,30,10',
+      date: 'February 22, 2014 08:30:30',
       direction: 'down'
     };
     $('.alt-example').flipTimer(altOptions);
@@ -44,6 +44,7 @@ describe("flipTimer", function() {
 
   describe("default options", function() {
     it("should merge default options with user options", function() {
+      // date is converted to javascript date
       expect(instance.options).toEqual($.extend({}, instance.options, instance.userOptions));
     });
 
@@ -117,6 +118,43 @@ describe("flipTimer", function() {
     });
   });
 
+  describe("calculateDate", function() {
+    var dateDiff, seconds, minutes, hours, days;
+
+    beforeEach(function() {
+      spyOn(instance, 'render');
+
+      // run calculations here to compare with those generated
+      dateDiff = new Date() - new Date(instance.options.date);
+      seconds = Math.floor(dateDiff/1000) % 60;
+      minutes = Math.floor(dateDiff/1000/60) % 60;
+      hours = Math.floor(dateDiff/1000/3600) % 24;
+      days = Math.floor(dateDiff/1000/60/60/24);
+
+      instance.calculateDate();
+    });
+
+    it("should set the days to count down/up from", function() {
+      expect(instance.days).toEqual(days);
+    });
+
+    it("should set the hours to count down/up from", function() {
+      expect(instance.hours).toEqual(hours);
+    });
+
+    it("should set the minutes to count down/up from", function() {
+      expect(instance.minutes).toEqual(minutes);
+    });
+
+    it("should set the seconds to count down/up from", function() {
+      expect(instance.seconds).toEqual(seconds);
+    });
+
+    it("should call render method", function() {
+      expect(instance.render).toHaveBeenCalled();
+    });
+  });
+
   describe("render", function() {
     beforeEach(function() {
       spyOn(instance, 'renderDigits');
@@ -141,8 +179,12 @@ describe("flipTimer", function() {
     });
 
     describe("renderDigits", function() {
+      it("should render 2 digit-array divs to contain digit sets", function() {
+        expect(instance.element.find('.seconds .digit-set').length).toEqual(2);
+      });
+
       it("should render 10 digitTemplates inside the subject", function() {
-        expect(instance.element.find('.seconds .digit').length).toEqual(10);
+        expect(instance.element.find('.seconds .digit-set:first-child .digit').length).toEqual(10);
       });
 
       it("should output digits 0 through 9 for each digitTemplate if the direction is up", function() {
@@ -181,6 +223,20 @@ describe("flipTimer", function() {
       jasmine.Clock.tick(1000);
       expect(instance.increaseDigit.calls.length).toEqual(3);
       // ... you get the idea
+    });
+  });
+
+  describe("increaseDigit", function() {
+    beforeEach(function() {
+      jasmine.Clock.useMock();
+    });
+
+    it("should increase the second value every second", function() {
+      var initialVal = instance.seconds;
+      jasmine.Clock.tick(1000);
+      expect(instance.seconds).toEqual(initialVal + 1);
+      jasmine.Clock.tick(1000);
+      expect(instance.seconds).toEqual(initialVal + 2);
     });
   });
 });

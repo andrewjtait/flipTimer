@@ -20,6 +20,8 @@
   .flipTimer .seconds {
     height: 100%;
     position: relative; }
+  .flipTimer .digit-set:last-child {
+    margin-left: 72px; }
   .flipTimer .digit {
     position: absolute;
     height: 100%; }

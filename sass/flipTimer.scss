@@ -16,13 +16,19 @@ $height: 140px;
   line-height: $height;
   height: $height;
 
-  .seconds {
+  .seconds,
+  .minutes,
+  .hours,
+  .days {
     height: 100%;
-    position: relative;
+    display: inline;
   }
 
-  .digit-set:last-child {
-    margin-left: 72px;
+  .digit-set {
+    width: $height / 2;
+    height: 100%;
+    display: inline-block;
+    position: relative;
   }
 
   .digit {

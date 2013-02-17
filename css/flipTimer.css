@@ -17,11 +17,17 @@
   font-size: 140px;
   line-height: 140px;
   height: 140px; }
-  .flipTimer .seconds {
+  .flipTimer .seconds,
+  .flipTimer .minutes,
+  .flipTimer .hours,
+  .flipTimer .days {
     height: 100%;
+    display: inline; }
+  .flipTimer .digit-set {
+    width: 70px;
+    height: 100%;
+    display: inline-block;
     position: relative; }
-  .flipTimer .digit-set:last-child {
-    margin-left: 72px; }
   .flipTimer .digit {
     position: absolute;
     height: 100%; }

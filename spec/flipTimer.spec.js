@@ -48,12 +48,14 @@ describe("flipTimer", function() {
 
   describe("default options", function() {
     it("should merge default options with user options", function() {
+      // date is made into javascript date
+      instance.userOptions.date = new Date(instance.userOptions.date);
       expect(instance.options).toEqual($.extend({}, instance.options, instance.userOptions));
     });
 
     describe("if user passes options", function() {
       it("should allow user to set date option", function() {
-        expect(instance.options.date).toEqual(options.date);
+        expect(instance.options.date).toEqual(new Date(options.date));
       });
 
       it("should allow user to set direction option", function() {
@@ -63,7 +65,7 @@ describe("flipTimer", function() {
 
     describe("if user does not pass options", function() {
       it("should provide default date option", function() {
-        expect(emptyInstance.options.date).toEqual(emptyInstance.defaultOptions.date);
+        expect(emptyInstance.options.date).toEqual(new Date(emptyInstance.defaultOptions.date));
       });
 
       it("should provide default direction option", function() {
@@ -128,7 +130,7 @@ describe("flipTimer", function() {
       spyOn(instance, 'render');
 
       // run calculations here to compare with those generated
-      dateDiff = instance.initDate - new Date(instance.options.date);
+      dateDiff = instance.initDate - instance.options.date;
       seconds = Math.floor(dateDiff/1000) % 60;
       minutes = Math.floor(dateDiff/1000/60) % 60;
       hours = Math.floor(dateDiff/1000/3600) % 24;

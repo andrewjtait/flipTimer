@@ -46,6 +46,9 @@
     // store the date/time when initialised
     this.initDate = new Date();
 
+    // make the date into a javascript date
+    this.options.date = new Date(this.options.date);
+
     // untested
     this.calculateDate();
   };
@@ -79,9 +82,9 @@
 
       // calculates the difference in dates
       if (this.options.direction == 'down') {
-        dateDiff = new Date(this.options.date) - this.initDate;
+        dateDiff = this.options.date - this.initDate;
       } else if (this.options.direction == 'up') {
-        dateDiff = this.initDate - new Date(this.options.date);
+        dateDiff = this.initDate - this.options.date;
       }
 
       // sets the date/time on the instance

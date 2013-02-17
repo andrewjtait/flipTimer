@@ -188,18 +188,22 @@ describe("flipTimer", function() {
         expect(instance.element.find('.seconds .digit-set').length).toEqual(2);
       });
 
-      it("should render 10 digitTemplates inside the subject", function() {
-        expect(instance.element.find('.seconds .digit-set:first-child .digit').length).toEqual(10);
+      it("should render 6 digitTemplates inside the subject:first-child", function() {
+        expect(instance.element.find('.seconds .digit-set:first-child .digit').length).toEqual(6);
+      });
+
+      it("should render 10 digitTemplates inside the subject:last-child", function() {
+        expect(instance.element.find('.seconds .digit-set:last-child .digit').length).toEqual(10);
       });
 
       it("should output digits 0 through 9 for each digitTemplate if the direction is up", function() {
-        expect(instance.element.find('.seconds .digit:first-child .digit-wrap').html()).toEqual('0');
-        expect(instance.element.find('.seconds .digit:last-child .digit-wrap').html()).toEqual('9');
+        expect(instance.element.find('.seconds .digit-set:last-child .digit:first-child .digit-wrap').html()).toEqual('0');
+        expect(instance.element.find('.seconds .digit-set:last-child .digit:last-child .digit-wrap').html()).toEqual('9');
       });
 
       it("should output digits 9 through 0 for each digitTemplate if the direction is down", function() {
-        expect(altInstance.element.find('.seconds .digit:first-child .digit-wrap').html()).toEqual('9');
-        expect(altInstance.element.find('.seconds .digit:last-child .digit-wrap').html()).toEqual('0');
+        expect(altInstance.element.find('.seconds .digit-set:last-child .digit:first-child .digit-wrap').html()).toEqual('9');
+        expect(altInstance.element.find('.seconds .digit-set:last-child .digit:last-child .digit-wrap').html()).toEqual('0');
       });
     });
 
@@ -216,7 +220,7 @@ describe("flipTimer", function() {
       });
 
       it("should add previous class to the relevant digit", function() {
-        firstChildInt = (number_array[0] == 0) ? 10 : number_array[0];
+        firstChildInt = (number_array[0] == 0) ? 6 : number_array[0];
         lastChildInt = (number_array[1] == 0) ? 10 : number_array[1];
 
         expect(instance.element.find('.seconds .digit-set:first-child .previous').index()).toEqual(parseInt(firstChildInt - 1));
@@ -230,6 +234,8 @@ describe("flipTimer", function() {
   });
 
   describe("startTimer", function() {
+    var initialVal;
+
     beforeEach(function() {
       spyOn(instance, 'increaseDigit');
       jasmine.Clock.useMock();
@@ -250,6 +256,86 @@ describe("flipTimer", function() {
       expect(instance.increaseDigit.calls.length).toEqual(3);
       // ... you get the idea
     });
+
+    describe("counting up", function() {
+      it("should increase the second value every second", function() {
+        instance.seconds = 30;
+        initialVal = instance.seconds;
+        jasmine.Clock.tick(1000);
+        expect(instance.seconds).toEqual(initialVal + 1);
+        expect(instance.increaseDigit).toHaveBeenCalledWith(instance.options.seconds);
+      });
+
+      it("should reset seconds to 0 if it reaches 60 and increase minutes by 1", function() {
+        initialVal = instance.minutes;
+        instance.seconds = 59;
+        jasmine.Clock.tick(1000);
+        expect(instance.seconds).toEqual(0);
+        expect(instance.minutes).toEqual(initialVal + 1);
+        expect(instance.increaseDigit).toHaveBeenCalledWith(instance.options.minutes);
+      });
+
+      it("should reset minutes to 0 if it reaches 60 and increase hours by 1", function() {
+        initialVal = instance.hours;
+        instance.seconds = 59;
+        instance.minutes = 59;
+        jasmine.Clock.tick(1000);
+        expect(instance.minutes).toEqual(0);
+        expect(instance.hours).toEqual(initialVal + 1);
+        expect(instance.increaseDigit).toHaveBeenCalledWith(instance.options.hours);
+      });
+
+      it("should reset hours to 0 if it reaches 24 and increase days by 1", function() {
+        initialVal = instance.days;
+        instance.seconds = 59;
+        instance.minutes = 59;
+        instance.hours = 23;
+        jasmine.Clock.tick(1000);
+        expect(instance.hours).toEqual(0);
+        expect(instance.days).toEqual(initialVal + 1);
+        expect(instance.increaseDigit).toHaveBeenCalledWith(instance.options.days);
+      });
+    });
+
+    describe("counting down", function() {
+      beforeEach(function() {
+        altInstance.startTimer();
+      });
+
+      it("should decrease the second value every second", function() {
+        altInstance.seconds = 35;
+        initialVal = altInstance.seconds;
+        jasmine.Clock.tick(1000);
+        expect(altInstance.seconds).toEqual(initialVal - 1);
+      });
+
+      it("should reset seconds to 59 if it reaches 0 and decrease minutes by 1", function() {
+        initialVal = altInstance.minutes;
+        altInstance.seconds = 0;
+        jasmine.Clock.tick(1000);
+        expect(altInstance.seconds).toEqual(59);
+        expect(altInstance.minutes).toEqual(initialVal - 1);
+      });
+
+      it("should reset minutes to 59 if it reaches 0 and decrease hours by 1", function() {
+        initialVal = altInstance.hours;
+        altInstance.seconds = 0;
+        altInstance.minutes = 0;
+        jasmine.Clock.tick(1000);
+        expect(altInstance.minutes).toEqual(59);
+        expect(altInstance.hours).toEqual(initialVal - 1);
+      });
+
+      it("should reset hours to 23 if it reaches 0 and decrease days by 1", function() {
+        initialVal = altInstance.days;
+        altInstance.seconds = 0;
+        altInstance.minutes = 0;
+        altInstance.hours = 0;
+        jasmine.Clock.tick(1000);
+        expect(altInstance.hours).toEqual(23);
+        expect(altInstance.days).toEqual(initialVal - 1);
+      });
+    });
   });
 
   describe("increaseDigit", function() {
@@ -257,12 +343,7 @@ describe("flipTimer", function() {
       jasmine.Clock.useMock();
     });
 
-    it("should increase the second value every second", function() {
-      var initialVal = instance.seconds;
-      jasmine.Clock.tick(1000);
-      expect(instance.seconds).toEqual(initialVal + 1);
-      jasmine.Clock.tick(1000);
-      expect(instance.seconds).toEqual(initialVal + 2);
+    it("should add active class to digit relative to current second", function() {
     });
   });
 });

@@ -130,40 +130,58 @@
      * @param subject {HTMLElement} the element to generate digits for
      */
     renderDigits: function(subject, value) {
-      var i, x, currentDigit, _this = this, number_array, firstChildInt, lastChildInt;
+      var i, x, max, maxDigit, currentDigit, _this = this, number_array;
 
-      // append the digitTemplate 10 times to each digit-set
+      // if digits are not  already rendered...
       if ($(subject).find('.digit').length == 0) {
+        // split the value into two individual digits
+        number_array = String((value / 10).toFixed(1)).split('.');
+
+        // set maximum digits for seconds/minutes/hours
+        if (subject == _this.options.seconds || subject == _this.options.minutes) {
+          // minutes and seconds max digit
+          maxDigit = 5;
+        } else if (subject == _this.options.hours) {
+          // hours max digit
+          maxDigit = 2;
+        } else {
+          // everything else digit max
+          maxDigit = 9;
+        }
+
         // append two divs to contain two sets of digits for each subject
         $(subject).append('<div class="digit-set"></div><div class="digit-set"></div>');
 
-        $(subject).find('.digit-set').each(function() {
-          for(i=0; i<10; i++) {
+        // for each digit-set in the subject
+        $(subject).find('.digit-set').each(function(el) {
+          // if first digit, then use digit max
+          max = (el == 0) ? maxDigit : 9;
+
+          // generate the right number of digits
+          for(i=0; i<=max; i++) {
+            // append the digit template
             $(this).append(_this.options.digitTemplate);
+
+            // if direction is down then make numbers decline
+            x = (_this.options.direction == 'down') ? max - i : i;
+
+            // select the current digit and apply the number to it
             currentDigit = $(this).find('.digit')[i];
-            if (_this.options.direction == 'down') {
-              x = 9 - i;
-            } else {
-              x = i;
-            }
             $(currentDigit).find('.digit-wrap').append(x);
+
+            // if the current number matches the value then apply actve class
+            if (x == number_array[el]) {
+              $(currentDigit).addClass('active');
+            } else if (number_array[el] != 0 && ((x + 1) == number_array[el])) {
+              // if the current number is one less than active but not zero
+              $(currentDigit).addClass('previous');
+            } else if (number_array[el] == 0 && x == max) {
+              // if the current number is zero then apply previous to max
+              $(currentDigit).addClass('previous');
+            }
           }
         });
       }
-
-      // setup initial active and previous state
-      // splits the value to two digits eg: 35seconds = 3,5
-      number_array = String((value / 10).toFixed(1)).split('.');
-
-      // if number is 0, then previous needs to fallback to 10 so it doesn't hit negative numbers
-      firstChildInt = (number_array[0] == 0) ? 10 : number_array[0];
-      lastChildInt = (number_array[1] == 0) ? 10 : number_array[1];
-
-      $($(subject).find('.digit-set:first-child .digit')[number_array[0]]).addClass('active');
-      $($(subject).find('.digit-set:first-child .digit')[firstChildInt - 1]).addClass('previous');
-
-      $($(subject).find('.digit-set:last-child .digit')[number_array[1]]).addClass('active');
-      $($(subject).find('.digit-set:last-child .digit')[lastChildInt - 1]).addClass('previous');
     },
 
     /**
@@ -176,7 +194,45 @@
 
       clearInterval(this.timer);
       this.timer = setInterval(function() {
+        // increase/decrease seconds
+        (_this.options.direction == 'down') ? _this.seconds-- : _this.seconds++;
         _this.increaseDigit(_this.options.seconds);
+
+        // increase/decrease minutes
+        if (_this.seconds == 60 || _this.seconds == -1) {
+          if (_this.options.direction == 'down') {
+            _this.seconds = 59;
+            _this.minutes--;
+          } else {
+            _this.seconds = 0;
+            _this.minutes++;
+          }
+          _this.increaseDigit(_this.options.minutes);
+        }
+
+        // increase/decrease hours
+        if (_this.minutes == 60 || _this.minutes == -1) {
+          if (_this.options.direction == 'down') {
+            _this.minutes = 59;
+            _this.hours--;
+          } else {
+            _this.minutes = 0;
+            _this.hours++;
+          }
+          _this.increaseDigit(_this.options.hours);
+        }
+
+        // increase/decrease days
+        if (_this.hours == 24 || _this.hours == -1) {
+          if (_this.options.direction == 'down') {
+            _this.hours = 23;
+            _this.days--;
+          } else {
+            _this.hours = 0;
+            _this.days++;
+          }
+          _this.increaseDigit(_this.options.days);
+        }
       },1000);
     },
 
@@ -187,20 +243,57 @@
      * @param target {HTMLElement} the element to increase digit for
      */
     increaseDigit: function(target) {
-      this.seconds++;
-      /*
-      var current = $(target).find('.active'),
-          previous = $(target).find('.previous');
+      var digitSets = new Array(), _this = this;
 
-      previous.removeClass('previous');
-      current.removeClass('active').addClass('previous');
+      // find all digit-sets related to digit type
+      $(target).find('.digit-set').each(function() {
+        digitSets.push(this);
+      });
 
-      if (current.next().length == 0) {
-        $(target).find('.digit:first-child').addClass('active');
-      } else {
-        current.next().addClass('active');
+      // increase individual digit
+      increase(digitSets[digitSets.length - 1]);
+
+      /**
+       * Increases individual digit in a digit-set
+       *
+       * @param el {HTMLElement} the digit-set being increased
+       */
+      function increase(el) {
+        var current = $(el).find('.active'),
+            previous = $(el).find('.previous'),
+            index = $.inArray(el, digitSets);
+
+        previous.removeClass('previous');
+        current.removeClass('active').addClass('previous');
+
+        if (current.next().length == 0) {
+          if (_this.options.direction == 'down'
+              && target == _this.options.hours
+              && _this.hours == -1
+              && $(el).find('.digit').length == 10) {
+            // if the hours digit reaches 0 it should make 24 active
+            $($(el).find('.digit')[6]).addClass('active')
+          } else {
+            // increase to first digit in set
+            $(el).find('.digit:first-child').addClass('active');
+          }
+          if (index != 0) {
+            // increase digit of sibling digit-set
+            increase(digitSets[index - 1]);
+          }
+        } else {
+          if (_this.options.direction == "up"
+              && target == _this.options.hours
+              && _this.hours == 24) {
+            // if the hours digit reaches 24 it should make 0 active
+            $(el).find('.digit:first-child').addClass('active');
+            increase(digitSets[index - 1]);
+          } else {
+            // increase the next digit
+            current.next().addClass('active');
+          }
+        }
       }
-      */
     }
   };
 

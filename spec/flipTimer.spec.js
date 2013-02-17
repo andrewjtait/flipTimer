@@ -40,11 +40,14 @@ describe("flipTimer", function() {
     it("should accept an object of user defined options", function() {
       expect(instance.userOptions).toEqual(options);
     });
+
+    it("should store date/time when initialised", function() {
+      expect(instance.initDate).toBeTruthy();
+    });
   });
 
   describe("default options", function() {
     it("should merge default options with user options", function() {
-      // date is converted to javascript date
       expect(instance.options).toEqual($.extend({}, instance.options, instance.userOptions));
     });
 
@@ -125,7 +128,7 @@ describe("flipTimer", function() {
       spyOn(instance, 'render');
 
       // run calculations here to compare with those generated
-      dateDiff = new Date() - new Date(instance.options.date);
+      dateDiff = instance.initDate - new Date(instance.options.date);
       seconds = Math.floor(dateDiff/1000) % 60;
       minutes = Math.floor(dateDiff/1000/60) % 60;
       hours = Math.floor(dateDiff/1000/3600) % 24;
@@ -163,19 +166,19 @@ describe("flipTimer", function() {
     });
 
     it("should call renderDigits on seconds", function() {
-      expect(instance.renderDigits).toHaveBeenCalledWith(instance.options.seconds);
+      expect(instance.renderDigits).toHaveBeenCalledWith(instance.options.seconds, instance.seconds);
     });
 
     it("should call renderDigits on minutes", function() {
-      expect(instance.renderDigits).toHaveBeenCalledWith(instance.options.minutes);
+      expect(instance.renderDigits).toHaveBeenCalledWith(instance.options.minutes, instance.minutes);
     });
 
     it("should call renderDigits on hours", function() {
-      expect(instance.renderDigits).toHaveBeenCalledWith(instance.options.hours);
+      expect(instance.renderDigits).toHaveBeenCalledWith(instance.options.hours, instance.hours);
     });
 
     it("should call renderDigits on days", function() {
-      expect(instance.renderDigits).toHaveBeenCalledWith(instance.options.days);
+      expect(instance.renderDigits).toHaveBeenCalledWith(instance.options.days, instance.days);
     });
 
     describe("renderDigits", function() {
@@ -195,6 +198,27 @@ describe("flipTimer", function() {
       it("should output digits 9 through 0 for each digitTemplate if the direction is down", function() {
         expect(altInstance.element.find('.seconds .digit:first-child .digit-wrap').html()).toEqual('9');
         expect(altInstance.element.find('.seconds .digit:last-child .digit-wrap').html()).toEqual('0');
+      });
+    });
+
+    describe("initial state of active and previous", function() {
+      var number_array, firstChildInt, lastChildInt;
+
+      beforeEach(function() {
+        number_array = String((instance.seconds / 10).toFixed(1)).split('.');
+      });
+
+      it("should add active class to the relevant digit", function() {
+        expect(instance.element.find('.seconds .digit-set:first-child .active').index()).toEqual(parseInt(number_array[0]));
+        expect(instance.element.find('.seconds .digit-set:last-child .active').index()).toEqual(parseInt(number_array[1]));
+      });
+
+      it("should add previous class to the relevant digit", function() {
+        firstChildInt = (number_array[0] == 0) ? 10 : number_array[0];
+        lastChildInt = (number_array[1] == 0) ? 10 : number_array[1];
+
+        expect(instance.element.find('.seconds .digit-set:first-child .previous').index()).toEqual(parseInt(firstChildInt - 1));
+        expect(instance.element.find('.seconds .digit-set:last-child .previous').index()).toEqual(parseInt(lastChildInt - 1));
       });
     });
 

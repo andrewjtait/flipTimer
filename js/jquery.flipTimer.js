@@ -43,6 +43,9 @@
       this.options.days = this.element.find('.days')[0];
     }
 
+    // store the date/time when initialised
+    this.initDate = new Date();
+
     // untested
     this.calculateDate();
   };
@@ -76,9 +79,9 @@
 
       // calculates the difference in dates
       if (this.options.direction == 'down') {
-        dateDiff = new Date(this.options.date) - new Date();
+        dateDiff = new Date(this.options.date) - this.initDate;
       } else if (this.options.direction == 'up') {
-        dateDiff = new Date() - new Date(this.options.date);
+        dateDiff = this.initDate - new Date(this.options.date);
       }
 
       // sets the date/time on the instance
@@ -99,19 +102,19 @@
     render: function() {
       // if using seconds, populate it
       if (this.options.seconds) {
-        this.renderDigits(this.options.seconds);
+        this.renderDigits(this.options.seconds, this.seconds);
       }
       // if using minutes, populate it
       if (this.options.minutes) {
-        this.renderDigits(this.options.minutes);
+        this.renderDigits(this.options.minutes, this.minutes);
       }
       // if using hours, populate it
       if (this.options.hours) {
-        this.renderDigits(this.options.hours);
+        this.renderDigits(this.options.hours, this.hours);
       }
       // if using days, populate it
-      if (this.options.minutes) {
-        this.renderDigits(this.options.days);
+      if (this.options.days) {
+        this.renderDigits(this.options.days, this.days);
       }
 
       this.startTimer();
@@ -123,14 +126,14 @@
      * @method renderDigits
      * @param subject {HTMLElement} the element to generate digits for
      */
-    renderDigits: function(subject) {
-      var i, x, currentDigit, _this = this, seconds_split, seconds_array;
-
-      // append two divs to contain two sets of digits for each subject
-      $(subject).append('<div class="digit-set"></div><div class="digit-set"></div>');
+    renderDigits: function(subject, value) {
+      var i, x, currentDigit, _this = this, number_array, firstChildInt, lastChildInt;
 
       // append the digitTemplate 10 times to each digit-set
       if ($(subject).find('.digit').length == 0) {
+        // append two divs to contain two sets of digits for each subject
+        $(subject).append('<div class="digit-set"></div><div class="digit-set"></div>');
+
         $(subject).find('.digit-set').each(function() {
           for(i=0; i<10; i++) {
             $(this).append(_this.options.digitTemplate);
@@ -145,14 +148,19 @@
         });
       }
 
-      // untested
-      seconds_split = String(this.seconds / 10);
-      seconds_array = seconds_split.split('.');
-      $(this.element.find('.seconds .digit-set:last-child .digit')[seconds_array[1]]).addClass('active');
-      $(this.element.find('.seconds .digit-set:last-child .digit')[seconds_array[1] - 1]).addClass('previous');
-      $(this.element.find('.seconds .digit-set:first-child .digit')[seconds_array[0]]).addClass('active');
-      $(this.element.find('.seconds .digit-set:first-child .digit')[seconds_array[0] - 1]).addClass('previous');
-      // end of untested
+      // setup initial active and previous state
+      // splits the value to two digits eg: 35seconds = 3,5
+      number_array = String((value / 10).toFixed(1)).split('.');
+
+      // if number is 0, then previous needs to fallback to 10 so it doesn't hit negative numbers
+      firstChildInt = (number_array[0] == 0) ? 10 : number_array[0];
+      lastChildInt = (number_array[1] == 0) ? 10 : number_array[1];
+
+      $($(subject).find('.digit-set:first-child .digit')[number_array[0]]).addClass('active');
+      $($(subject).find('.digit-set:first-child .digit')[firstChildInt - 1]).addClass('previous');
+
+      $($(subject).find('.digit-set:last-child .digit')[number_array[1]]).addClass('active');
+      $($(subject).find('.digit-set:last-child .digit')[lastChildInt - 1]).addClass('previous');
     },
 
     /**
@@ -177,7 +185,6 @@
      */
     increaseDigit: function(target) {
       this.seconds++;
-      console.log(this.seconds);
       /*
       var current = $(target).find('.active'),
           previous = $(target).find('.previous');

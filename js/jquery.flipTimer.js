@@ -269,7 +269,7 @@
         if (current.next().length == 0) {
           if (_this.options.direction == 'down'
               && target == _this.options.hours
-              && _this.hours == -1
+              && (_this.hours == -1 || _this.hours == 23)
               && $(el).find('.digit').length == 10) {
             // if the hours digit reaches 0 it should make 24 active
             $($(el).find('.digit')[6]).addClass('active')

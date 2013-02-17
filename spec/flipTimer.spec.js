@@ -339,11 +339,33 @@ describe("flipTimer", function() {
   });
 
   describe("increaseDigit", function() {
+    var current;
+
     beforeEach(function() {
       jasmine.Clock.useMock();
+      instance.seconds = 25;
     });
 
     it("should add active class to digit relative to current second", function() {
+      current = instance.element.find('.seconds .digit-set:last-child .active').index();
+      current = current + 1;
+      current = (current == 10) ? 0 : current;
+      jasmine.Clock.tick(1000);
+      expect(instance.element.find('.seconds .digit-set:last-child .active').index()).toEqual(current);
+    });
+
+    it("should add previous class to digit relative to current second", function() {
+      current = instance.element.find('.seconds .digit-set:last-child .active').index();
+      jasmine.Clock.tick(1000);
+      expect(instance.element.find('.seconds .digit-set:last-child .previous').index()).toEqual(current);
+    });
+
+    it("should make the 6th child active if hours reaches -1", function() {
+      instance.hours = 0;
+      instance.minutes = 0;
+      instance.seconds = 0;
+      jasmine.Clock.tick(1000);
+      expect(instance.element.find('.hours .digit-set:last-child .active').index()).toEqual(6);
     });
   });
 });

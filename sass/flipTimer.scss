@@ -1,18 +1,22 @@
-$height: 140px;
+$height: 100px;
+$perspective: $height*4;
+$animSpeed: 0.3s;
 
 @-webkit-keyframes flipTop {
-  0% { -webkit-transform: perspective($height*2) rotateX(0deg); }
-  100% { -webkit-transform: perspective($height*2) rotateX(-90deg); }
+  0% { -webkit-transform: perspective($perspective) rotateX(0deg); }
+  100% { -webkit-transform: perspective($perspective) rotateX(-90deg); }
 }
 
 @-webkit-keyframes flipBottom {
-  0% { -webkit-transform: perspective($height*2) rotateX(90deg); }
-  100% { -webkit-transform: perspective($height*2) rotateX(0deg); }
+  0% { -webkit-transform: perspective($perspective) rotateX(90deg); }
+  100% { -webkit-transform: perspective($perspective) rotateX(0deg); }
 }
 
 .flipTimer {
   color: #FFF;
-  font-size: $height;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: $height * 0.9;
+  font-weight: bold;
   line-height: $height;
   height: $height;
 
@@ -25,10 +29,13 @@ $height: 140px;
   }
 
   .digit-set {
-    width: $height / 2;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    width: $height * 0.7;
     height: 100%;
     display: inline-block;
     position: relative;
+    margin: 0 1px;
   }
 
   .digit {
@@ -40,24 +47,47 @@ $height: 140px;
       left: 0;
       overflow: hidden;
       height: 50%;
-
-      .digit-wrap {
-        background-color: #222;
-      }
+      padding: 0 10px;
 
       &.digit-top {
-        background-color: #000;
+        background-color: #333;
+        border-bottom: 1px solid #333;
+        box-sizing: border-box;
         top: 0;
         z-index: 0;
+        border-radius: 10px 10px 0 0;
+
+        &:before {
+          content: "";
+          box-shadow: inset 0 -10px 25px rgba(0,0,0,0.2);
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
       }
 
       &.digit-bottom {
+        background-color: #333;
         bottom: 0;
         z-index:0;
+        border-radius: 0 0 10px 10px;
 
         .digit-wrap {
           display: block;
           margin-top: -100%;
+        }
+
+        &:before {
+          content: "";
+          box-shadow: inset 0 10px 25px rgba(0,0,0,0.2);
+          border-radius: 0 0 10px 10px;
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          left: 0;
+          top: 0;
         }
       }
     }
@@ -66,7 +96,7 @@ $height: 140px;
       .digit-top {
         z-index: 2;
         -webkit-transform-origin: 50% 100%;
-        -webkit-animation: flipTop .5s linear both;
+        -webkit-animation: flipTop $animSpeed ease-in both;
       }
 
       .digit-bottom {
@@ -82,7 +112,7 @@ $height: 140px;
       .digit-bottom {
         z-index: 2;
         -webkit-transform-origin: 50% 0%;
-        -webkit-animation: flipBottom .5s .5s linear both;
+        -webkit-animation: flipBottom $animSpeed $animSpeed ease-out both;
       }
     }
   }

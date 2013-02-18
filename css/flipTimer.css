@@ -1,22 +1,24 @@
 @-webkit-keyframes flipTop {
   0% {
-    -webkit-transform: perspective(280px) rotateX(0deg); }
+    -webkit-transform: perspective(400px) rotateX(0deg); }
 
   100% {
-    -webkit-transform: perspective(280px) rotateX(-90deg); } }
+    -webkit-transform: perspective(400px) rotateX(-90deg); } }
 
 @-webkit-keyframes flipBottom {
   0% {
-    -webkit-transform: perspective(280px) rotateX(90deg); }
+    -webkit-transform: perspective(400px) rotateX(90deg); }
 
   100% {
-    -webkit-transform: perspective(280px) rotateX(0deg); } }
+    -webkit-transform: perspective(400px) rotateX(0deg); } }
 
 .flipTimer {
   color: #FFF;
-  font-size: 140px;
-  line-height: 140px;
-  height: 140px; }
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 90px;
+  font-weight: bold;
+  line-height: 100px;
+  height: 100px; }
   .flipTimer .seconds,
   .flipTimer .minutes,
   .flipTimer .hours,
@@ -24,10 +26,13 @@
     height: 100%;
     display: inline; }
   .flipTimer .digit-set {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     width: 70px;
     height: 100%;
     display: inline-block;
-    position: relative; }
+    position: relative;
+    margin: 0 1px; }
   .flipTimer .digit {
     position: absolute;
     height: 100%; }
@@ -35,23 +40,44 @@
       position: absolute;
       left: 0;
       overflow: hidden;
-      height: 50%; }
-      .flipTimer .digit > div .digit-wrap {
-        background-color: #222; }
+      height: 50%;
+      padding: 0 10px; }
       .flipTimer .digit > div.digit-top {
-        background-color: #000;
+        background-color: #333;
+        border-bottom: 1px solid #333333;
+        box-sizing: border-box;
         top: 0;
-        z-index: 0; }
+        z-index: 0;
+        border-radius: 10px 10px 0 0; }
+        .flipTimer .digit > div.digit-top:before {
+          content: "";
+          box-shadow: inset 0 -10px 25px rgba(0, 0, 0, 0.2);
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          left: 0;
+          top: 0; }
       .flipTimer .digit > div.digit-bottom {
+        background-color: #333;
         bottom: 0;
-        z-index: 0; }
+        z-index: 0;
+        border-radius: 0 0 10px 10px; }
         .flipTimer .digit > div.digit-bottom .digit-wrap {
           display: block;
           margin-top: -100%; }
+        .flipTimer .digit > div.digit-bottom:before {
+          content: "";
+          box-shadow: inset 0 10px 25px rgba(0, 0, 0, 0.2);
+          border-radius: 0 0 10px 10px;
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          left: 0;
+          top: 0; }
     .flipTimer .digit.previous .digit-top {
       z-index: 2;
       -webkit-transform-origin: 50% 100%;
-      -webkit-animation: flipTop 0.5s linear both; }
+      -webkit-animation: flipTop 0.3s ease-in both; }
     .flipTimer .digit.previous .digit-bottom {
       z-index: 1; }
     .flipTimer .digit.active .digit-top {
@@ -59,4 +85,4 @@
     .flipTimer .digit.active .digit-bottom {
       z-index: 2;
       -webkit-transform-origin: 50% 0%;
-      -webkit-animation: flipBottom 0.5s 0.5s linear both; }
+      -webkit-animation: flipBottom 0.3s 0.3s ease-out both; }

@@ -359,13 +359,5 @@ describe("flipTimer", function() {
       jasmine.Clock.tick(1000);
       expect(instance.element.find('.seconds .digit-set:last-child .previous').index()).toEqual(current);
     });
-
-    it("should make the 6th child active if hours reaches -1", function() {
-      instance.hours = 0;
-      instance.minutes = 0;
-      instance.seconds = 0;
-      jasmine.Clock.tick(1000);
-      expect(instance.element.find('.hours .digit-set:last-child .active').index()).toEqual(6);
-    });
   });
 });

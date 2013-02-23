@@ -28,6 +28,13 @@ In the body of your HTML page, choose which digits you want to use:
 </div>
 ```
 
+## To Do
+<ul>
+  <li>Cross-browser testing.</li>
+  <li>Action for when timer runs out.</li>
+  <li>Enhancements to CSS.</li>
+</ul>
+
 ## Demo
 There is a <a href="http://www.andrewjamestait.co.uk/demo/flipTimer/">demo of flipTimer</a> to view.
 

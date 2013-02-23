@@ -12,6 +12,48 @@
   100% {
     -webkit-transform: perspective(400px) rotateX(0deg); } }
 
+@-moz-keyframes flipTop {
+  0% {
+    -moz-transform: perspective(400px) rotateX(0deg); }
+
+  100% {
+    -moz-transform: perspective(400px) rotateX(-90deg); } }
+
+@-moz-keyframes flipBottom {
+  0% {
+    -moz-transform: perspective(400px) rotateX(90deg); }
+
+  100% {
+    -moz-transform: perspective(400px) rotateX(0deg); } }
+
+@-ms-keyframes flipTop {
+  0% {
+    -ms-transform: perspective(400px) rotateX(0deg); }
+
+  100% {
+    -ms-transform: perspective(400px) rotateX(-90deg); } }
+
+@-ms-keyframes flipBottom {
+  0% {
+    -ms-transform: perspective(400px) rotateX(90deg); }
+
+  100% {
+    -ms-transform: perspective(400px) rotateX(0deg); } }
+
+@-keyframes flipTop {
+  0% {
+    transform: perspective(400px) rotateX(0deg); }
+
+  100% {
+    transform: perspective(400px) rotateX(-90deg); } }
+
+@-keyframes flipBottom {
+  0% {
+    transform: perspective(400px) rotateX(90deg); }
+
+  100% {
+    transform: perspective(400px) rotateX(0deg); } }
+
 .flipTimer {
   color: #FFF;
   font-family: "Helvetica Neue", Helvetica, sans-serif;
@@ -77,7 +119,13 @@
     .flipTimer .digit.previous .digit-top {
       z-index: 2;
       -webkit-transform-origin: 50% 100%;
-      -webkit-animation: flipTop 0.3s ease-in both; }
+      -webkit-animation: flipTop 0.3s ease-in both;
+      -moz-transform-origin: 50% 100%;
+      -moz-animation: flipTop 0.3s ease-in both;
+      -ms-transform-origin: 50% 100%;
+      -ms-animation: flipTop 0.3s ease-in both;
+      transform-origin: 50% 100%;
+      animation: flipTop 0.3s ease-in both; }
     .flipTimer .digit.previous .digit-bottom {
       z-index: 1; }
     .flipTimer .digit.active .digit-top {
@@ -85,4 +133,10 @@
     .flipTimer .digit.active .digit-bottom {
       z-index: 2;
       -webkit-transform-origin: 50% 0%;
-      -webkit-animation: flipBottom 0.3s 0.3s ease-out both; }
+      -webkit-animation: flipBottom 0.3s 0.3s ease-out both;
+      -moz-transform-origin: 50% 0%;
+      -moz-animation: flipBottom 0.3s 0.3s ease-out both;
+      -ms-transform-origin: 50% 0%;
+      -ms-animation: flipBottom 0.3s 0.3s ease-out both;
+      transform-origin: 50% 0%;
+      animation: flipBottom 0.3s 0.3s ease-out both; }

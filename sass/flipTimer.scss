@@ -12,6 +12,36 @@ $animSpeed: 0.3s;
   100% { -webkit-transform: perspective($perspective) rotateX(0deg); }
 }
 
+@-moz-keyframes flipTop {
+  0% { -moz-transform: perspective($perspective) rotateX(0deg); }
+  100% { -moz-transform: perspective($perspective) rotateX(-90deg); }
+}
+
+@-moz-keyframes flipBottom {
+  0% { -moz-transform: perspective($perspective) rotateX(90deg); }
+  100% { -moz-transform: perspective($perspective) rotateX(0deg); }
+}
+
+@-ms-keyframes flipTop {
+  0% { -ms-transform: perspective($perspective) rotateX(0deg); }
+  100% { -ms-transform: perspective($perspective) rotateX(-90deg); }
+}
+
+@-ms-keyframes flipBottom {
+  0% { -ms-transform: perspective($perspective) rotateX(90deg); }
+  100% { -ms-transform: perspective($perspective) rotateX(0deg); }
+}
+
+@-keyframes flipTop {
+  0% { transform: perspective($perspective) rotateX(0deg); }
+  100% { transform: perspective($perspective) rotateX(-90deg); }
+}
+
+@-keyframes flipBottom {
+  0% { transform: perspective($perspective) rotateX(90deg); }
+  100% { transform: perspective($perspective) rotateX(0deg); }
+}
+
 .flipTimer {
   color: #FFF;
   font-family: "Helvetica Neue", Helvetica, sans-serif;
@@ -97,6 +127,13 @@ $animSpeed: 0.3s;
         z-index: 2;
         -webkit-transform-origin: 50% 100%;
         -webkit-animation: flipTop $animSpeed ease-in both;
+        -moz-transform-origin: 50% 100%;
+        -moz-animation: flipTop $animSpeed ease-in both;
+        -ms-transform-origin: 50% 100%;
+        -ms-animation: flipTop $animSpeed ease-in both;
+        transform-origin: 50% 100%;
+        animation: flipTop $animSpeed ease-in both;
+
       }
 
       .digit-bottom {
@@ -113,6 +150,12 @@ $animSpeed: 0.3s;
         z-index: 2;
         -webkit-transform-origin: 50% 0%;
         -webkit-animation: flipBottom $animSpeed $animSpeed ease-out both;
+        -moz-transform-origin: 50% 0%;
+        -moz-animation: flipBottom $animSpeed $animSpeed ease-out both;
+        -ms-transform-origin: 50% 0%;
+        -ms-animation: flipBottom $animSpeed $animSpeed ease-out both;
+        transform-origin: 50% 0%;
+        animation: flipBottom $animSpeed $animSpeed ease-out both;
       }
     }
   }

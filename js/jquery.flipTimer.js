@@ -196,7 +196,7 @@
       this.timer = setInterval(function() {
         // increase/decrease seconds
         (_this.options.direction == 'down') ? _this.seconds-- : _this.seconds++;
-        _this.increaseDigit(_this.options.seconds);
+        if (_this.options.seconds) _this.increaseDigit(_this.options.seconds);
 
         // increase/decrease minutes
         if (_this.seconds == 60 || _this.seconds == -1) {
@@ -207,7 +207,7 @@
             _this.seconds = 0;
             _this.minutes++;
           }
-          _this.increaseDigit(_this.options.minutes);
+          if (_this.options.minutes) _this.increaseDigit(_this.options.minutes);
         }
 
         // increase/decrease hours
@@ -219,7 +219,7 @@
             _this.minutes = 0;
             _this.hours++;
           }
-          _this.increaseDigit(_this.options.hours);
+          if (_this.options.hours) _this.increaseDigit(_this.options.hours);
         }
 
         // increase/decrease days
@@ -231,7 +231,7 @@
             _this.hours = 0;
             _this.days++;
           }
-          _this.increaseDigit(_this.options.days);
+          if (_this.options.days) _this.increaseDigit(_this.options.days);
         }
       },1000);
     },

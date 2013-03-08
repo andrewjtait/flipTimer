@@ -16,8 +16,9 @@
 
   <script>
     $(document).ready(function() {
-      $('.flipTimer').flipTimer({ direction: 'down', date: 'March 8, 2013 23:31:00', callback: function(){
-          alert("Finished!");
+      //Callback works only with direction = "down"
+      $('.flipTimer').flipTimer({ direction: 'down', date: 'March 8, 2013 23:48:50', callback: function(){
+          alert("Callback - Finished!");
       }});
     });
   </script>

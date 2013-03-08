@@ -16,7 +16,9 @@
 
   <script>
     $(document).ready(function() {
-      $('.flipTimer').flipTimer({ direction: 'up', date: 'February 17, 2013 23:15:00' });
+      $('.flipTimer').flipTimer({ direction: 'down', date: 'March 8, 2013 23:31:00', callback: function(){
+          alert("Finished!");
+      }});
     });
   </script>
 </head>

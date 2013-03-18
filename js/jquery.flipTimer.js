@@ -132,7 +132,7 @@
     renderDigits: function(subject, value) {
       var i, x, max, maxDigit, currentDigit, _this = this, number_array;
 
-      // if digits are not  already rendered...
+      // if digits are not already rendered...
       if ($(subject).find('.digit').length == 0) {
         // split the value into two individual digits
         number_array = String((value / 10).toFixed(1)).split('.');
@@ -272,7 +272,7 @@
               && (_this.hours == -1 || _this.hours == 23)
               && $(el).find('.digit').length == 10) {
             // if the hours digit reaches 0 it should make 24 active
-            $($(el).find('.digit')[6]).addClass('active')
+            $($(el).find('.digit')[6]).addClass('active');
           } else {
             // increase to first digit in set
             $(el).find('.digit:first-child').addClass('active');

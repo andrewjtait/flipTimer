@@ -50,6 +50,12 @@ $animSpeed: 0.3s;
   line-height: $height;
   height: $height;
 
+  .seperator {
+    vertical-align: top;
+    margin: 0 -20px;
+    display: inline;
+  }
+
   .seconds,
   .minutes,
   .hours,
@@ -60,7 +66,8 @@ $animSpeed: 0.3s;
 
   .digit-set {
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    border: 1px solid #111111;
     width: $height * 0.7;
     height: 100%;
     display: inline-block;
@@ -79,7 +86,8 @@ $animSpeed: 0.3s;
       height: 50%;
       padding: 0 10px;
 
-      &.digit-top {
+      &.digit-top,
+      &.shadow-top {
         background-color: #333;
         border-bottom: 1px solid #333;
         box-sizing: border-box;
@@ -89,7 +97,7 @@ $animSpeed: 0.3s;
 
         &:before {
           content: "";
-          box-shadow: inset 0 -10px 25px rgba(0,0,0,0.2);
+          box-shadow: inset 0 10px 25px rgba(0,0,0,0.4);
           height: 100%;
           width: 100%;
           position: absolute;
@@ -98,7 +106,15 @@ $animSpeed: 0.3s;
         }
       }
 
-      &.digit-bottom {
+      &.shadow-top {
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,0)), to(#000));
+        width: 70px;
+        opacity: 0;
+        -webkit-transition: opacity $animSpeed ease-in;
+      }
+
+      &.digit-bottom,
+      &.shadow-bottom {
         background-color: #333;
         bottom: 0;
         z-index:0;
@@ -111,7 +127,7 @@ $animSpeed: 0.3s;
 
         &:before {
           content: "";
-          box-shadow: inset 0 10px 25px rgba(0,0,0,0.2);
+          box-shadow: inset 0 10px 25px rgba(0,0,0,0.3);
           border-radius: 0 0 10px 10px;
           height: 100%;
           width: 100%;
@@ -120,10 +136,19 @@ $animSpeed: 0.3s;
           top: 0;
         }
       }
+
+      &.shadow-bottom {
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#000), to(rgba(0,0,0,0)));
+        width: $height / 2;
+        opacity: 0;
+        -webkit-transition: opacity $animSpeed ease-in;
+      }
     }
 
     &.previous {
-      .digit-top {
+      .digit-top,
+      .shadow-top {
+        opacity: 1;
         z-index: 2;
         -webkit-transform-origin: 50% 100%;
         -webkit-animation: flipTop $animSpeed ease-in both;
@@ -136,8 +161,10 @@ $animSpeed: 0.3s;
 
       }
 
-      .digit-bottom {
+      .digit-bottom,
+      .shadow-bottom {
         z-index: 1;
+        opacity: 1;
       }
     }
 

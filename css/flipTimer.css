@@ -61,6 +61,10 @@
   font-weight: bold;
   line-height: 100px;
   height: 100px; }
+  .flipTimer .seperator {
+    vertical-align: top;
+    margin: 0 -20px;
+    display: inline; }
   .flipTimer .seconds,
   .flipTimer .minutes,
   .flipTimer .hours,
@@ -69,7 +73,8 @@
     display: inline; }
   .flipTimer .digit-set {
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    border: 1px solid #111111;
     width: 70px;
     height: 100%;
     display: inline-block;
@@ -84,39 +89,51 @@
       overflow: hidden;
       height: 50%;
       padding: 0 10px; }
-      .flipTimer .digit > div.digit-top {
+      .flipTimer .digit > div.digit-top, .flipTimer .digit > div.shadow-top {
         background-color: #333;
-        border-bottom: 1px solid #333333;
+        border-bottom: 1px solid #333;
         box-sizing: border-box;
         top: 0;
         z-index: 0;
         border-radius: 10px 10px 0 0; }
-        .flipTimer .digit > div.digit-top:before {
+        .flipTimer .digit > div.digit-top:before, .flipTimer .digit > div.shadow-top:before {
           content: "";
-          box-shadow: inset 0 -10px 25px rgba(0, 0, 0, 0.2);
+          box-shadow: inset 0 10px 25px rgba(0, 0, 0, 0.4);
           height: 100%;
           width: 100%;
           position: absolute;
           left: 0;
           top: 0; }
-      .flipTimer .digit > div.digit-bottom {
+      .flipTimer .digit > div.shadow-top {
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0, 0, 0, 0)), to(black));
+        width: 70px;
+        opacity: 0;
+        -webkit-transition: opacity 0.3s ease-in; }
+      .flipTimer .digit > div.digit-bottom, .flipTimer .digit > div.shadow-bottom {
         background-color: #333;
         bottom: 0;
         z-index: 0;
         border-radius: 0 0 10px 10px; }
-        .flipTimer .digit > div.digit-bottom .digit-wrap {
+        .flipTimer .digit > div.digit-bottom .digit-wrap, .flipTimer .digit > div.shadow-bottom .digit-wrap {
           display: block;
           margin-top: -100%; }
-        .flipTimer .digit > div.digit-bottom:before {
+        .flipTimer .digit > div.digit-bottom:before, .flipTimer .digit > div.shadow-bottom:before {
           content: "";
-          box-shadow: inset 0 10px 25px rgba(0, 0, 0, 0.2);
+          box-shadow: inset 0 10px 25px rgba(0, 0, 0, 0.3);
           border-radius: 0 0 10px 10px;
           height: 100%;
           width: 100%;
           position: absolute;
           left: 0;
           top: 0; }
-    .flipTimer .digit.previous .digit-top {
+      .flipTimer .digit > div.shadow-bottom {
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(black), to(rgba(0, 0, 0, 0)));
+        width: 50px;
+        opacity: 0;
+        -webkit-transition: opacity 0.3s ease-in; }
+    .flipTimer .digit.previous .digit-top,
+    .flipTimer .digit.previous .shadow-top {
+      opacity: 1;
       z-index: 2;
       -webkit-transform-origin: 50% 100%;
       -webkit-animation: flipTop 0.3s ease-in both;
@@ -126,8 +143,10 @@
       -ms-animation: flipTop 0.3s ease-in both;
       transform-origin: 50% 100%;
       animation: flipTop 0.3s ease-in both; }
-    .flipTimer .digit.previous .digit-bottom {
-      z-index: 1; }
+    .flipTimer .digit.previous .digit-bottom,
+    .flipTimer .digit.previous .shadow-bottom {
+      z-index: 1;
+      opacity: 1; }
     .flipTimer .digit.active .digit-top {
       z-index: 1; }
     .flipTimer .digit.active .digit-bottom {

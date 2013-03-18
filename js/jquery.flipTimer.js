@@ -65,9 +65,11 @@
       '  <div class="digit-top">' +
       '    <span class="digit-wrap"></span>' +
       '  </div>' +
+      '  <div class="shadow-top"></div>' +
       '  <div class="digit-bottom">' +
       '    <span class="digit-wrap"></span>' +
       '  </div>' +
+      '  <div class="shadow-bottom"></div>' +
       '</div>'
   };
 

@@ -1,11 +1,13 @@
 describe("flipTimer", function() {
-  var instance, options, altOptions;
+  var instance, options, altOptions, date = new Date(),
+      pastDate = date.setMonth(date.getMonth() - 1),
+      futureDate = date.setMonth(date.getMonth() + 2);
 
   beforeEach(function() {
     // set some options for the test
     // set up an example with correct options
     options = {
-      date: 'February 15, 2013 08:30:30',
+      date: pastDate,
       direction: 'up'
     };
     $('.example').flipTimer(options);
@@ -17,7 +19,7 @@ describe("flipTimer", function() {
 
     // set up an example with alternative options
     altOptions = {
-      date: 'February 22, 2014 08:30:30',
+      date: futureDate,
       direction: 'down'
     };
     $('.alt-example').flipTimer(altOptions);
@@ -295,6 +297,21 @@ describe("flipTimer", function() {
         expect(instance.days).toEqual(initialVal + 1);
         expect(instance.increaseDigit).toHaveBeenCalledWith(instance.options.days);
       });
+
+      describe("when time runs out", function() {
+        beforeEach(function() {
+          spyOn(window, 'clearInterval');
+          instance.days = 99;
+          instance.hours = 23;
+          instance.minutes = 59;
+          instance.seconds = 59;
+        });
+
+        it("should stop the timer when it reaches full time", function() {
+          jasmine.Clock.tick(1000);
+          expect(clearInterval).toHaveBeenCalledWith(instance.timer);
+        });
+      });
     });
 
     describe("counting down", function() {
@@ -334,6 +351,21 @@ describe("flipTimer", function() {
         jasmine.Clock.tick(1000);
         expect(altInstance.hours).toEqual(23);
         expect(altInstance.days).toEqual(initialVal - 1);
+      });
+
+      describe("when time runs out", function() {
+        beforeEach(function() {
+          spyOn(window, 'clearInterval');
+          altInstance.days = 0;
+          altInstance.hours = 0;
+          altInstance.minutes = 0;
+          altInstance.seconds = 0;
+        });
+
+        it("should stop the timer when it reaches zero", function() {
+          jasmine.Clock.tick(1000);
+          expect(clearInterval).toHaveBeenCalledWith(altInstance.timer);
+        });
       });
     });
   });

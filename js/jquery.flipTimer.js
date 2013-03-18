@@ -135,7 +135,14 @@
       // if digits are not already rendered...
       if ($(subject).find('.digit').length == 0) {
         // split the value into two individual digits
-        number_array = String((value / 10).toFixed(1)).split('.');
+        // unless time has ran out
+        if (_this.days < 0 && _this.hours < 0 && _this.minutes < 0 && _this.seconds < 0) {
+          number_array = [0,0];
+        } else if (_this.days > 99) {
+          number_array = [0,0];
+        } else {
+          number_array = String((value / 10).toFixed(1)).split('.');
+        }
 
         // set maximum digits for seconds/minutes/hours
         if (subject == _this.options.seconds || subject == _this.options.minutes) {
@@ -169,7 +176,7 @@
             currentDigit = $(this).find('.digit')[i];
             $(currentDigit).find('.digit-wrap').append(x);
 
-            // if the current number matches the value then apply actve class
+            // if the current number matches the value then apply active class
             if (x == number_array[el]) {
               $(currentDigit).addClass('active');
             } else if (number_array[el] != 0 && ((x + 1) == number_array[el])) {
@@ -194,6 +201,18 @@
 
       clearInterval(this.timer);
       this.timer = setInterval(function() {
+        // if timer runs out stop the timer
+        if (_this.days <= 0 && _this.hours <= 0 && _this.minutes <= 0 && _this.seconds <= 0) {
+          clearInterval(_this.timer);
+          return;
+        }
+
+        // if timer runs out stop the timer
+        if ((_this.days > 99) || (_this.days == 99 && _this.hours == 23 && _this.minutes == 59 && _this.seconds == 59)) {
+          clearInterval(_this.timer);
+          return;
+        }
+
         // increase/decrease seconds
         (_this.options.direction == 'down') ? _this.seconds-- : _this.seconds++;
         if (_this.options.seconds) _this.increaseDigit(_this.options.seconds);

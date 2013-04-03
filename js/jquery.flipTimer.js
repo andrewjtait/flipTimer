@@ -60,6 +60,7 @@
     days: false,
     date: 'January 1, 2013 08:30:30',
     direction: 'up',
+    callback: null,
     digitTemplate: '' +
       '<div class="digit">' +
       '  <div class="digit-top">' +
@@ -123,6 +124,26 @@
       }
 
       this.startTimer();
+    },
+
+     /**
+     * Check if the timer finished and execute callback function
+     *
+     * @method checkDone
+     */
+    checkDone: function () {
+        //console.log("checking");
+        /*if (this.options.direction == "up") {
+            if (this.seconds == this.options.seconds && this.options.minutes == 0 && this.options.hours == 0 && this.options.days == 0) {
+                alert("Done!");
+            }
+        } else */
+        if (this.options.direction == "down") {
+            if (this.seconds == 0 && this.minutes == 0 && this.hours == 0 && this.days == 0) {
+                if(this.options.callback !== null)
+                  this.options.callback();
+            }
+        }
     },
 
     /**
@@ -215,6 +236,8 @@
           return;
         }
 
+        //Check if the timer is done
+        _this.checkDone();
         // increase/decrease seconds
         (_this.options.direction == 'down') ? _this.seconds-- : _this.seconds++;
         if (_this.options.seconds) _this.increaseDigit(_this.options.seconds);

@@ -126,26 +126,6 @@
       this.startTimer();
     },
 
-     /**
-     * Check if the timer finished and execute callback function
-     *
-     * @method checkDone
-     */
-    checkDone: function () {
-        //console.log("checking");
-        /*if (this.options.direction == "up") {
-            if (this.seconds == this.options.seconds && this.options.minutes == 0 && this.options.hours == 0 && this.options.days == 0) {
-                alert("Done!");
-            }
-        } else */
-        if (this.options.direction == "down") {
-            if (this.seconds == 0 && this.minutes == 0 && this.hours == 0 && this.days == 0) {
-                if(this.options.callback !== null)
-                  this.options.callback();
-            }
-        }
-    },
-
     /**
      * Renders the digits for a given subject
      *
@@ -226,6 +206,11 @@
       this.timer = setInterval(function() {
         // if timer runs out stop the timer
         if (_this.days <= 0 && _this.hours <= 0 && _this.minutes <= 0 && _this.seconds <= 0) {
+          // execute callback if one exists
+          if (_this.options.callback) {
+            _this.options.callback();
+          }
+
           clearInterval(_this.timer);
           return;
         }
@@ -236,8 +221,6 @@
           return;
         }
 
-        //Check if the timer is done
-        _this.checkDone();
         // increase/decrease seconds
         (_this.options.direction == 'down') ? _this.seconds-- : _this.seconds++;
         if (_this.options.seconds) _this.increaseDigit(_this.options.seconds);

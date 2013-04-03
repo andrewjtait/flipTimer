@@ -20,7 +20,8 @@ describe("flipTimer", function() {
     // set up an example with alternative options
     altOptions = {
       date: futureDate,
-      direction: 'down'
+      direction: 'down',
+      callback: function() { console.log('callback'); }
     };
     $('.alt-example').flipTimer(altOptions);
     altInstance = $('.alt-example').data('flipTimer');
@@ -81,9 +82,11 @@ describe("flipTimer", function() {
         '  <div class="digit-top">' +
         '    <span class="digit-wrap"></span>' +
         '  </div>' +
+        '  <div class="shadow-top"></div>' +
         '  <div class="digit-bottom">' +
         '    <span class="digit-wrap"></span>' +
         '  </div>' +
+        '  <div class="shadow-bottom"></div>' +
         '</div>';
       expect(instance.options.digitTemplate).toEqual(template);
     });
@@ -273,7 +276,6 @@ describe("flipTimer", function() {
         instance.seconds = 59;
         jasmine.Clock.tick(1000);
         expect(instance.seconds).toEqual(0);
-        expect(instance.minutes).toEqual(initialVal + 1);
         expect(instance.increaseDigit).toHaveBeenCalledWith(instance.options.minutes);
       });
 
@@ -283,7 +285,6 @@ describe("flipTimer", function() {
         instance.minutes = 59;
         jasmine.Clock.tick(1000);
         expect(instance.minutes).toEqual(0);
-        expect(instance.hours).toEqual(initialVal + 1);
         expect(instance.increaseDigit).toHaveBeenCalledWith(instance.options.hours);
       });
 
@@ -294,7 +295,6 @@ describe("flipTimer", function() {
         instance.hours = 23;
         jasmine.Clock.tick(1000);
         expect(instance.hours).toEqual(0);
-        expect(instance.days).toEqual(initialVal + 1);
         expect(instance.increaseDigit).toHaveBeenCalledWith(instance.options.days);
       });
 
@@ -317,6 +317,7 @@ describe("flipTimer", function() {
     describe("counting down", function() {
       beforeEach(function() {
         altInstance.startTimer();
+        spyOn(altInstance.options, 'callback');
       });
 
       it("should decrease the second value every second", function() {
@@ -331,7 +332,6 @@ describe("flipTimer", function() {
         altInstance.seconds = 0;
         jasmine.Clock.tick(1000);
         expect(altInstance.seconds).toEqual(59);
-        expect(altInstance.minutes).toEqual(initialVal - 1);
       });
 
       it("should reset minutes to 59 if it reaches 0 and decrease hours by 1", function() {
@@ -340,7 +340,6 @@ describe("flipTimer", function() {
         altInstance.minutes = 0;
         jasmine.Clock.tick(1000);
         expect(altInstance.minutes).toEqual(59);
-        expect(altInstance.hours).toEqual(initialVal - 1);
       });
 
       it("should reset hours to 23 if it reaches 0 and decrease days by 1", function() {
@@ -350,7 +349,11 @@ describe("flipTimer", function() {
         altInstance.hours = 0;
         jasmine.Clock.tick(1000);
         expect(altInstance.hours).toEqual(23);
-        expect(altInstance.days).toEqual(initialVal - 1);
+      });
+
+      it("should not execute a callback til time runs out", function() {
+        jasmine.Clock.tick(1000);
+        expect(altInstance.options.callback).not.toHaveBeenCalled();
       });
 
       describe("when time runs out", function() {
@@ -365,6 +368,11 @@ describe("flipTimer", function() {
         it("should stop the timer when it reaches zero", function() {
           jasmine.Clock.tick(1000);
           expect(clearInterval).toHaveBeenCalledWith(altInstance.timer);
+        });
+
+        it("should execute a callback if user has specified one", function() {
+          jasmine.Clock.tick(1000);
+          expect(altInstance.options.callback).toHaveBeenCalled();
         });
       });
     });

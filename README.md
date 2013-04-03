@@ -14,7 +14,7 @@ Initialise flipTimer:
 ```html
 <script>
   $(document).ready(function() {
-    $('.example').flipTimer({ direction: 'up', date: 'February 17, 2013 23:15:00' });
+    $('.example').flipTimer({ direction: 'down', date: 'June 17, 2013 23:15:00', callback: function() { alert('times up!'); } });
   });
 </script>
 ```
@@ -31,8 +31,6 @@ In the body of your HTML page, choose which digits you want to use:
 ## To Do
 <ul>
   <li>Cross-browser testing.</li>
-  <li>Action for when timer runs out.</li>
-  <li>Enhancements to CSS.</li>
 </ul>
 
 ## Demo

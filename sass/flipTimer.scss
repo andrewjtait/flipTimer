@@ -65,7 +65,7 @@ $animSpeed: 0.3s;
   }
 
   .digit-set {
-    border-radius: 10px;
+    border-radius: $height / 10;
     box-shadow: 0 2px 4px rgba(0,0,0,0.8);
     border: 1px solid #111111;
     width: $height * 0.7;
@@ -84,7 +84,7 @@ $animSpeed: 0.3s;
       left: 0;
       overflow: hidden;
       height: 50%;
-      padding: 0 10px;
+      padding: 0 $height / 10;
 
       &.digit-top,
       &.shadow-top {
@@ -93,7 +93,7 @@ $animSpeed: 0.3s;
         box-sizing: border-box;
         top: 0;
         z-index: 0;
-        border-radius: 10px 10px 0 0;
+        border-radius: $height / 10 $height / 10 0 0;
 
         &:before {
           content: "";
@@ -108,7 +108,7 @@ $animSpeed: 0.3s;
 
       &.shadow-top {
         background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,0)), to(#000));
-        width: 70px;
+        width: $height * 0.7;
         opacity: 0;
         -webkit-transition: opacity $animSpeed ease-in;
       }
@@ -118,7 +118,7 @@ $animSpeed: 0.3s;
         background-color: #333;
         bottom: 0;
         z-index:0;
-        border-radius: 0 0 10px 10px;
+        border-radius: 0 0 $height / 10 $height / 10;
 
         .digit-wrap {
           display: block;
@@ -128,7 +128,7 @@ $animSpeed: 0.3s;
         &:before {
           content: "";
           box-shadow: inset 0 10px 25px rgba(0,0,0,0.3);
-          border-radius: 0 0 10px 10px;
+          border-radius: 0 0 $height / 10 $height / 10;
           height: 100%;
           width: 100%;
           position: absolute;

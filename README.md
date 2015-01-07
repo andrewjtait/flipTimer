@@ -34,7 +34,7 @@ In the body of your HTML page, choose which digits you want to use:
 </ul>
 
 ## Demo
-There is a <a href="http://www.andrewjamestait.co.uk/demo/flipTimer/">demo of flipTimer</a> to view.
+There is a <a href="http://www.andrewjamestait.co.uk/flipTimer">demo of flipTimer</a> to view.
 
 ## License
 Copyright (c) 2013 Andrew James Tait   

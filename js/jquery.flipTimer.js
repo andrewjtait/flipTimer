@@ -58,7 +58,7 @@
     minutes: false,
     hours: false,
     days: false,
-    date: 'January 1, 2013 08:30:30',
+    date: (new Date()).toDateString(),
     direction: 'up',
     callback: null,
     digitTemplate: '' +

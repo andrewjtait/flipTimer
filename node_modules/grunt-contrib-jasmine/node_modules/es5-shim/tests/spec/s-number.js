@@ -1,6 +1,8 @@
+/*global describe, it, expect */
+
 describe('Number', function () {
     'use strict';
-    
+
     describe('toFixed', function () {
         it('should convert numbers correctly', function () {
             expect((0.00008).toFixed(3)).toBe('0.000');

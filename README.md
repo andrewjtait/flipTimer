@@ -28,10 +28,13 @@ In the body of your HTML page, choose which digits you want to use:
 </div>
 ```
 
-## To Do
-<ul>
-  <li>Cross-browser testing.</li>
-</ul>
+## Tests
+To run the test suite, run:
+```
+npm install
+grunt karma:unit
+```
+This will run the tests and continue to watch for any file changes.
 
 ## Demo
 There is a <a href="http://www.andrewjamestait.co.uk/flipTimer">demo of flipTimer</a> to view.

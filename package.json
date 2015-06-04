@@ -1,5 +1,12 @@
 {
   "devDependencies": {
-    "grunt-contrib-jasmine": "~0.8.2"
+    "karma": "~0.12.36",
+    "grunt-karma": "~0.11.0",
+    "jasmine-core": "~2.3.4",
+    "karma-jasmine": "~0.3.5",
+    "karma-chrome-launcher": "~0.1.12",
+    "karma-phantomjs-launcher": "~0.2.0",
+    "karma-firefox-launcher": "~0.1.6",
+    "karma-jasmine-jquery": "~0.1.1"
   }
 }

@@ -1,14 +1,15 @@
 module.exports = function(grunt) {
   grunt.initConfig({
-    jasmine : {
-      src : 'js/jquery.flipTimer.js',
-      options : {
-        vendor: [
-          'http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'
-        ],
-        specs : 'spec/flipTimer.spec.js'
+    karma: {
+      unit: {
+        configFile: 'config/karma.conf.js'
+      },
+      continuous: {
+        configFile: 'config/karma.conf.js',
+        singleRun: true,
+        browsers: ['PhantomJS']
       }
     }
   });
-  grunt.loadNpmTasks('grunt-contrib-jasmine');
+  grunt.loadNpmTasks('grunt-karma');
 };

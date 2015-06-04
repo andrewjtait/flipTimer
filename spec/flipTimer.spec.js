@@ -1,35 +1,15 @@
-var firstRun = true,
-    tpl = "<div class='tpl'>";
-    tpl += "<div class='example'>";
-    tpl += "  <div class='days'></div>";
-    tpl += "  <div class='hours'></div>";
-    tpl += "  <div class='minutes'></div>";
-    tpl += "  <div class='seconds'></div>";
-    tpl += "</div>";
-    tpl += "<div class='empty-example'>";
-    tpl += "</div>";
-    tpl += "<div class='alt-example'>";
-    tpl += "  <div class='days'></div>";
-    tpl += "  <div class='hours'></div>";
-    tpl += "  <div class='minutes'></div>";
-    tpl += "  <div class='seconds'></div>";
-    tpl += "</div>";
-    tpl += "</div>";
+jasmine.getFixtures().fixturesPath = 'base/spec';
 
 describe("flipTimer", function() {
   var instance, options, altOptions, date = new Date(),
       pastDate = date.setMonth(date.getMonth() - 1),
       futureDate = date.setMonth(date.getMonth() + 2);
 
-
   beforeEach(function() {
+    loadFixtures("template.html");
+
     jasmine.clock().uninstall();
     jasmine.clock().install();
-
-    if (firstRun) {
-      $('body').prepend(tpl);
-      firstRun = false;
-    }
 
     // set some options for the test
     // set up an example with correct options

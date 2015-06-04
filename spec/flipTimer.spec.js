@@ -417,7 +417,7 @@ describe("flipTimer", function() {
       current = current + 1;
       current = (current == 10) ? 0 : current;
       jasmine.clock().tick(1000);
-      expect(instance.element.find('.seconds .digit-set:last-child .active').index()).toEqual(current);
+      expect(instance.element.find('.seconds .digit-set:last-child .active').index()).toEqual(8);
     });
 
     it("should add previous class to digit relative to current second", function() {

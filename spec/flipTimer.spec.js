@@ -1,9 +1,36 @@
+var firstRun = true,
+    tpl = "<div class='tpl'>";
+    tpl += "<div class='example'>";
+    tpl += "  <div class='days'></div>";
+    tpl += "  <div class='hours'></div>";
+    tpl += "  <div class='minutes'></div>";
+    tpl += "  <div class='seconds'></div>";
+    tpl += "</div>";
+    tpl += "<div class='empty-example'>";
+    tpl += "</div>";
+    tpl += "<div class='alt-example'>";
+    tpl += "  <div class='days'></div>";
+    tpl += "  <div class='hours'></div>";
+    tpl += "  <div class='minutes'></div>";
+    tpl += "  <div class='seconds'></div>";
+    tpl += "</div>";
+    tpl += "</div>";
+
 describe("flipTimer", function() {
   var instance, options, altOptions, date = new Date(),
       pastDate = date.setMonth(date.getMonth() - 1),
       futureDate = date.setMonth(date.getMonth() + 2);
 
+
   beforeEach(function() {
+    jasmine.clock().uninstall();
+    jasmine.clock().install();
+
+    if (firstRun) {
+      $('body').prepend(tpl);
+      firstRun = false;
+    }
+
     // set some options for the test
     // set up an example with correct options
     options = {
@@ -33,7 +60,7 @@ describe("flipTimer", function() {
     });
 
     it("should add a property of element which is the html element instance was called on", function() {
-      expect(instance.element).toMatch($('.example'));
+      expect(instance.element.attr("class")).toEqual($('.example').attr("class"));
     });
 
     it("should add a class of flipTimer to the html element", function() {
@@ -243,12 +270,7 @@ describe("flipTimer", function() {
 
     beforeEach(function() {
       spyOn(instance, 'increaseDigit');
-      jasmine.clock().install();
       instance.startTimer();
-    });
-
-    afterEach(function() {
-      jasmine.clock().uninstall();
     });
 
     it("should not have called increaseDigit yet", function() {
@@ -386,12 +408,8 @@ describe("flipTimer", function() {
     var current;
 
     beforeEach(function() {
-      jasmine.clock().install();
       instance.seconds = 25;
-    });
-
-    afterEach(function() {
-      jasmine.clock().uninstall();
+      instance.startTimer();
     });
 
     it("should add active class to digit relative to current second", function() {

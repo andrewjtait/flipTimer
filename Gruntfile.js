@@ -6,8 +6,7 @@ module.exports = function(grunt) {
         vendor: [
           'http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'
         ],
-        specs : 'spec/flipTimer.spec.js',
-        template: require('./spec/templates/flipTimer.js')
+        specs : 'spec/flipTimer.spec.js'
       }
     }
   });

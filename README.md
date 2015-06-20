@@ -1,7 +1,7 @@
 flipTimer
 =========
 
-![Build Status](https://codeship.com/projects/4888e750-ea91-0132-e267-628e55ad70cc/status?branch=master)
+[![Build Status](https://codeship.com/projects/4888e750-ea91-0132-e267-628e55ad70cc/status?branch=master)](https://codeship.com/projects/83163)
 
 A jQuery plugin that will count-down to or count-up from a specified date.
 

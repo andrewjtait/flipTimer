@@ -39,7 +39,7 @@ grunt karma:unit
 This will run the tests and continue to watch for any file changes.
 
 ## Demo
-There is a <a href="http://www.andrewjamestait.co.uk/flipTimer">demo of flipTimer</a> to view.
+There is a <a href="http://andrewjtait.github.io/flipTimer/">demo of flipTimer</a> to view.
 
 ## License
 Copyright (c) 2013 Andrew James Tait   

@@ -58,7 +58,7 @@
     minutes: false,
     hours: false,
     days: false,
-    date: (new Date()).toDateString(),
+    date: 'January 1, 2013 08:30:30',
     direction: 'up',
     callback: null,
     digitTemplate: '' +
@@ -141,9 +141,16 @@
         // unless time has ran out
         if (_this.days < 0 && _this.hours < 0 && _this.minutes < 0 && _this.seconds < 0) {
           number_array = [0,0];
-        } else if (_this.days > 99) {
-          number_array = [0,0];
-        } else {
+        } 
+        else if (subject.classList.contains('days') && _this.days > 99) {
+          var output = [];
+          var daysString = _this.days.toString();
+          for (var i = 0, len = daysString.length; i < len; i += 1) {
+            output.push(+daysString.charAt(i));
+          }
+          number_array = output;
+        }
+        else {
           number_array = String((value / 10).toFixed(1)).split('.');
         }
 
@@ -161,6 +168,10 @@
 
         // append two divs to contain two sets of digits for each subject
         $(subject).append('<div class="digit-set"></div><div class="digit-set"></div>');
+
+        if (subject.classList.contains('days') && _this.days > 99) {
+          $(subject).append('<div class="digit-set"></div>');
+        }
 
         // for each digit-set in the subject
         $(subject).find('.digit-set').each(function(el) {
@@ -216,7 +227,7 @@
         }
 
         // if timer runs out stop the timer
-        if ((_this.days > 99) || (_this.days == 99 && _this.hours == 23 && _this.minutes == 59 && _this.seconds == 59)) {
+        if ((_this.days > 999) || (_this.days == 999 && _this.hours == 23 && _this.minutes == 59 && _this.seconds == 59)) {
           clearInterval(_this.timer);
           return;
         }

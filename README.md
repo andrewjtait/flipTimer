@@ -1,8 +1,6 @@
 flipTimer
 =========
 
-[![Build Status](https://codeship.com/projects/4888e750-ea91-0132-e267-628e55ad70cc/status?branch=master)](https://codeship.com/projects/83163)
-
 A jQuery plugin that will count-down to or count-up from a specified date.
 
 ## Usage
@@ -34,7 +32,7 @@ In the body of your HTML page, choose which digits you want to use:
 To run the test suite, run:
 ```
 npm install
-grunt karma:unit
+npm test
 ```
 This will run the tests and continue to watch for any file changes.
 

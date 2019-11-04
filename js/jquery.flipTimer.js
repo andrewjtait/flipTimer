@@ -58,7 +58,7 @@
     minutes: false,
     hours: false,
     days: false,
-    date: 'January 1, 2013 08:30:30',
+    date: new Date().toDateString(),
     direction: 'up',
     callback: null,
     digitTemplate: '' +
@@ -134,7 +134,6 @@
      */
     renderDigits: function(subject, value) {
       var i, x, max, maxDigit, currentDigit, _this = this, number_array;
-
       // if digits are not already rendered...
       if ($(subject).find('.digit').length == 0) {
         // split the value into two individual digits
@@ -142,16 +141,13 @@
         if (_this.days < 0 && _this.hours < 0 && _this.minutes < 0 && _this.seconds < 0) {
           number_array = [0,0];
         } 
-        else if (subject.classList.contains('days') && _this.days > 99) {
-          var output = [];
-          var daysString = _this.days.toString();
-          for (var i = 0, len = daysString.length; i < len; i += 1) {
-            output.push(+daysString.charAt(i));
-          }
-          number_array = output;
-        }
         else {
-          number_array = String((value / 10).toFixed(1)).split('.');
+          number_array = String(value).split(""); // split all digits
+        
+          // ensure the set is at least 2 digits long
+          if (number_array.length < 2) {
+            number_array.unshift(0)
+          }
         }
 
         // set maximum digits for seconds/minutes/hours
@@ -166,12 +162,10 @@
           maxDigit = 9;
         }
 
-        // append two divs to contain two sets of digits for each subject
-        $(subject).append('<div class="digit-set"></div><div class="digit-set"></div>');
-
-        if (subject.classList.contains('days') && _this.days > 99) {
+        // append a div for each digit
+        number_array.forEach(function() {
           $(subject).append('<div class="digit-set"></div>');
-        }
+        });
 
         // for each digit-set in the subject
         $(subject).find('.digit-set').each(function(el) {

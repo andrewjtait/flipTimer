@@ -307,7 +307,7 @@ describe("flipTimer", function() {
       describe("when time runs out", function() {
         beforeEach(function() {
           spyOn(window, 'clearInterval');
-          instance.days = 909;
+          instance.days = 999;
           instance.hours = 23;
           instance.minutes = 59;
           instance.seconds = 59;

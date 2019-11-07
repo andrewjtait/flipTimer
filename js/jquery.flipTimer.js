@@ -58,7 +58,7 @@
     minutes: false,
     hours: false,
     days: false,
-    date: (new Date()).toDateString(),
+    date: new Date().toDateString(),
     direction: 'up',
     callback: null,
     digitTemplate: '' +
@@ -134,17 +134,20 @@
      */
     renderDigits: function(subject, value) {
       var i, x, max, maxDigit, currentDigit, _this = this, number_array;
-
       // if digits are not already rendered...
       if ($(subject).find('.digit').length == 0) {
         // split the value into two individual digits
         // unless time has ran out
         if (_this.days < 0 && _this.hours < 0 && _this.minutes < 0 && _this.seconds < 0) {
           number_array = [0,0];
-        } else if (_this.days > 99) {
-          number_array = [0,0];
-        } else {
-          number_array = String((value / 10).toFixed(1)).split('.');
+        } 
+        else {
+          number_array = String(value).split(""); // split all digits
+        
+          // ensure the set is at least 2 digits long
+          if (number_array.length < 2) {
+            number_array.unshift(0)
+          }
         }
 
         // set maximum digits for seconds/minutes/hours
@@ -159,8 +162,10 @@
           maxDigit = 9;
         }
 
-        // append two divs to contain two sets of digits for each subject
-        $(subject).append('<div class="digit-set"></div><div class="digit-set"></div>');
+        // append a div for each digit
+        number_array.forEach(function() {
+          $(subject).append('<div class="digit-set"></div>');
+        });
 
         // for each digit-set in the subject
         $(subject).find('.digit-set').each(function(el) {
@@ -216,7 +221,7 @@
         }
 
         // if timer runs out stop the timer
-        if ((_this.days > 99) || (_this.days == 99 && _this.hours == 23 && _this.minutes == 59 && _this.seconds == 59)) {
+        if ((_this.days > 999) || (_this.days == 999 && _this.hours == 23 && _this.minutes == 59 && _this.seconds == 59)) {
           clearInterval(_this.timer);
           return;
         }

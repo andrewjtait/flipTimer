@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "grunt": "^1.0.4",
+    "grunt": "^1.5.2",
     "grunt-karma": "^3.0.2",
     "jasmine-core": "~3.5.0",
     "karma": "~4.4.1",
